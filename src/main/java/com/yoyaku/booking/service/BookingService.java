@@ -1,9 +1,9 @@
-package service;
+package com.yoyaku.booking.service;
 
-import model.Booking;
-import model.BookingStatus;
+import com.yoyaku.booking.model.Booking;
+import com.yoyaku.booking.model.BookingStatus;
 import org.springframework.stereotype.Service;
-import repository.BookingRepository;
+import com.yoyaku.booking.repository.BookingRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
-package repository;
+package com.yoyaku.booking.repository;
 
-import model.Booking;
-import model.BookingStatus;
+import com.yoyaku.booking.model.Booking;
+import com.yoyaku.booking.model.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

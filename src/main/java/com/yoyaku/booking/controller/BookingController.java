@@ -1,10 +1,10 @@
-package controller;
+package com.yoyaku.booking.controller;
 
-import model.Booking;
-import model.BookingStatus;
+import com.yoyaku.booking.service.BookingService;
+import com.yoyaku.booking.model.Booking;
+import com.yoyaku.booking.model.BookingStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.BookingService;
 
 import java.util.List;
 

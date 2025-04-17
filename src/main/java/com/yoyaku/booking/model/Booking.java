@@ -1,4 +1,4 @@
-package model;
+package com.yoyaku.booking.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
