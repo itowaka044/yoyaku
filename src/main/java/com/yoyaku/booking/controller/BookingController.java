@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -35,12 +36,16 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Booking> updateStatus(
+    public ResponseEntity<Booking> updateBookingStatus(
             @PathVariable Long id,
-            @RequestParam BookingStatus status
+            @RequestParam BookingStatus newStatus
     ) {
-        return service.updateBookingStatus(id, status)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Booking> updatedBooking = service.updateBookingStatus(id, newStatus);
+
+        if (updatedBooking.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedBooking.get());
     }
 }
