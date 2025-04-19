@@ -18,8 +18,10 @@ public class BookingService {
     }
 
     public Booking createBooking(Booking booking) {
+        booking.setStatus(BookingStatus.PENDING);
         return repository.save(booking);
     }
+
 
     public List<Booking> getAllBookings() {
         return repository.findAll();
@@ -39,5 +41,9 @@ public class BookingService {
         }
 
         return bookingOptional;
+    }
+
+    public Optional<Booking> findById(Long id) {
+        return repository.findById(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.yoyaku.booking.controller;
 
+import com.yoyaku.booking.dto.BookingResponseDTO;
+import com.yoyaku.booking.dto.BookingStatusDTO;
 import com.yoyaku.booking.service.BookingService;
 import com.yoyaku.booking.model.Booking;
 import com.yoyaku.booking.model.BookingStatus;
@@ -20,6 +22,17 @@ public class BookingController {
         this.service = service;
     }
 
+    private BookingResponseDTO responseDTO(Booking booking) {
+        return new BookingResponseDTO(
+                booking.getId(),
+                booking.getName(),
+                booking.getPhone(),
+                booking.getDate(),
+                booking.getTime(),
+                booking.getStatus()
+        );
+    }
+
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
         return ResponseEntity.ok(service.createBooking(booking));
@@ -38,8 +51,10 @@ public class BookingController {
     @PatchMapping("/{id}")
     public ResponseEntity<Booking> updateBookingStatus(
             @PathVariable Long id,
-            @RequestParam BookingStatus newStatus
+            @RequestBody BookingStatusDTO statusDTO
     ) {
+        BookingStatus newStatus = statusDTO.getNewStatus();
+
         Optional<Booking> updatedBooking = service.updateBookingStatus(id, newStatus);
 
         if (updatedBooking.isEmpty()) {
@@ -48,4 +63,16 @@ public class BookingController {
 
         return ResponseEntity.ok(updatedBooking.get());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingResponseDTO> getById(@PathVariable Long id) {
+        Optional<Booking> booking = service.findById(id);
+
+        if (booking.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(responseDTO(booking.get()));
+    }
+
 }
