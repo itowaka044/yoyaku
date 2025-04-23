@@ -2,6 +2,7 @@ package com.yoyaku.booking.controller;
 
 import com.yoyaku.booking.dto.BookingResponseDTO;
 import com.yoyaku.booking.dto.BookingStatusDTO;
+import com.yoyaku.booking.mapper.BookingMapper;
 import com.yoyaku.booking.service.BookingService;
 import com.yoyaku.booking.model.Booking;
 import com.yoyaku.booking.model.BookingStatus;
@@ -22,34 +23,26 @@ public class BookingController {
         this.service = service;
     }
 
-    private BookingResponseDTO responseDTO(Booking booking) {
-        return new BookingResponseDTO(
-                booking.getId(),
-                booking.getName(),
-                booking.getPhone(),
-                booking.getDate(),
-                booking.getTime(),
-                booking.getStatus()
-        );
-    }
-
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-        return ResponseEntity.ok(service.createBooking(booking));
+    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody Booking booking) {
+        Booking savedBooking = service.createBooking(booking);
+        return ResponseEntity.ok(BookingMapper.toDTO(savedBooking));
     }
 
     @GetMapping
-    public List<Booking> getAllBookings() {
-        return service.getAllBookings();
+    public ResponseEntity<List<BookingResponseDTO>> getAllBookings() {
+        List<Booking> bookings = service.getAllBookings();
+        return ResponseEntity.ok(BookingMapper.toDTOList(bookings));
     }
 
     @GetMapping("/pending")
-    public List<Booking> getPendingBookings() {
-        return service.getPendingBookings();
+    public ResponseEntity<List<BookingResponseDTO>> getPendingBookings() {
+        List<Booking> bookings = service.getPendingBookings();
+        return ResponseEntity.ok(BookingMapper.toDTOList(bookings));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Booking> updateBookingStatus(
+    public ResponseEntity<BookingResponseDTO> updateBookingStatus(
             @PathVariable Long id,
             @RequestBody BookingStatusDTO statusDTO
     ) {
@@ -61,7 +54,9 @@ public class BookingController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(updatedBooking.get());
+        BookingResponseDTO bookingResponseDTO = BookingMapper.toDTO(updatedBooking.get());
+
+        return ResponseEntity.ok(bookingResponseDTO);
     }
 
     @GetMapping("/{id}")
@@ -72,7 +67,7 @@ public class BookingController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(responseDTO(booking.get()));
+        return ResponseEntity.ok(BookingMapper.toDTO(booking.get()));
     }
 
 }
