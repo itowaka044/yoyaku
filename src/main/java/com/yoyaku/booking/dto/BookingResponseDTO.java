@@ -3,7 +3,6 @@ package com.yoyaku.booking.dto;
 import com.yoyaku.booking.model.BookingStatus;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class BookingResponseDTO {
